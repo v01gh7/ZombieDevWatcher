@@ -1,6 +1,6 @@
 # Zombie Dev Watcher 🧟
 
-![Build Status](https://github.com/v01g/ZombieDevWatcher/actions/workflows/manual_release.yml/badge.svg)
+![Build Status](https://github.com/v01gh7/ZombieDevWatcher/actions/workflows/manual_release.yml/badge.svg)
 
 A simplified cross-platform utility to prevent "zombie" dev-server processes from accumulating on your system. 
 
@@ -8,10 +8,10 @@ A simplified cross-platform utility to prevent "zombie" dev-server processes fro
 
 | Platform | Architecture | Download Link |
 | :--- | :--- | :--- |
-| **Windows** | x64 | [zombie-watcher-win.exe](https://github.com/v01g/ZombieDevWatcher/releases/latest/download/zombie-watcher-win.exe) |
-| **Linux** | x64 | [zombie-watcher-linux](https://github.com/v01g/ZombieDevWatcher/releases/latest/download/zombie-watcher-linux) |
-| **macOS** | Intel (x64) | [zombie-watcher-macos](https://github.com/v01g/ZombieDevWatcher/releases/latest/download/zombie-watcher-macos) |
-| **macOS** | Silicon (ARM64) | [zombie-watcher-macos-arm64](https://github.com/v01g/ZombieDevWatcher/releases/latest/download/zombie-watcher-macos-arm64) | 
+| **Windows** | x64 | [zombie-watcher-win.exe](https://github.com/v01gh7/ZombieDevWatcher/releases/latest/download/zombie-watcher-win.exe) |
+| **Linux** | x64 | [zombie-watcher-linux](https://github.com/v01gh7/ZombieDevWatcher/releases/latest/download/zombie-watcher-linux) |
+| **macOS** | Intel (x64) | [zombie-watcher-macos](https://github.com/v01gh7/ZombieDevWatcher/releases/latest/download/zombie-watcher-macos) |
+| **macOS** | Silicon (ARM64) | [zombie-watcher-macos-arm64](https://github.com/v01gh7/ZombieDevWatcher/releases/latest/download/zombie-watcher-macos-arm64) | 
 
 ## 📦 Install via NPM (Requires Bun)
 
