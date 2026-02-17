@@ -61,7 +61,7 @@ program
         range: options.range,
         interval: options.interval,
         strategy: options.strategy as 'chain' | 'kill-base',
-        filter: options.filter.split(';').map((s: string) => s.trim()).filter((s: string) => s.length > 0),
+        filter: options.filter.split(/[;,]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0),
         dryRun: options.dryRun || false
     };
 
