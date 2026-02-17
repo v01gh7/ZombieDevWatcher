@@ -2,11 +2,14 @@
 
 A simplified utility to prevent "zombie" dev-server processes from accumulating on your system. 
 
-It launches itself on port **322** (as a singleton lock) and watches a target port range (defaulting to **5173** for Vite, etc.). When a new process starts on a higher port in the range, the watcher automatically kills the old process to free up resources.
+It launches itself on a **lock port** (default `322`) and watches one or more **target ports** (default `5173`). When a new process starts on a higher port in the range, the watcher automatically kills the old process to free up resources.
 
 ## Key Features
 - **Auto-Kill Zombies**: Prevents "marching ports" (5173 -> 5174 -> 5175...) by killing the old process when a new one appears.
-- **Singleton**: Binds to port **322** to ensure only one watcher runs at a time.
+- **Singleton / Multi-Instance**: 
+    - Binds to port **322** to ensure usage as a singleton for a specific set of watched ports.
+    - If 322 is taken, it automatically tries **323, 324... up to 332**, allowing you to run multiple independent watchers for different projects.
+- **Multi-Port Support**: Watch multiple base ports simultaneously (e.g., `5173` and `3000`).
 - **Lightweight**: Built with Bun.
 - **Safe**: Includes `--dry-run` and allowlist filtering.
 
@@ -16,16 +19,16 @@ It launches itself on port **322** (as a singleton lock) and watches a target po
 # Run with default settings (Base: 5173, Lock Port: 322)
 port-watcher.exe
 
-# Custom base port to watch
-port-watcher.exe --base 3000
+# Watch multiple ports (e.g., Vite and a backend API)
+port-watcher.exe --base "5173,3000,8080"
 
 # Dry-run mode (see what would be killed)
 port-watcher.exe --dry-run
 ```
 
 ### Options
-- `--base <n>`: Base port to watch (Default: `5173`).
-- `--range <n>`: Range to scan (Default: `20`).
+- `--base <ports>`: Comma-separated list of base ports to watch (Default: `5173`).
+- `--range <n>`: Range to scan for each base port (Default: `20`).
 - `--filter <names>`: Semicolon-separated list of allowed process names (Default: `node;nuxi;vite;npm`).
 - `--strategy <type>`: `chain` (kill n-1) or `kill-base` (kill base).
 
@@ -45,4 +48,4 @@ This repository includes a manual GitHub workflow to build and release the execu
 2. Select **Manual Release Build**.
 3. Click **Run workflow**.
 
-This will build the executable and update the release tag with the new binary.
+This will build the executable and update the release tag.
