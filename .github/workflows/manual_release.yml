@@ -1,16 +1,29 @@
-name: Manual Release Build
+name: Release Build
 
 on:
+  push:
+    tags:
+      - 'v*.*.*'
   workflow_dispatch:
     inputs:
-      tag_name:
-        description: 'Tag name to release (e.g. v1.0.0)'
-        required: true
-        default: 'v1.0.0'
+      update_latest:
+        description: 'Update latest release (instead of creating new tagged release)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      manual_tag:
+        description: 'Manual tag name (if not updating latest, optional)'
+        required: false
+        default: ''
 
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
       - name: Checkout code
@@ -35,21 +48,30 @@ jobs:
 
       - name: Build macOS (Silicon)
         run: bun build src/index.ts --compile --target bun-darwin-arm64 --outfile zombie-watcher-macos-arm64
-        
-      - name: Create Tag
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git tag ${{ inputs.tag_name }}
-          git push origin ${{ inputs.tag_name }}
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
 
-      - name: Release and Upload Assets
+      - name: Determine Release Tag
+        id: tag
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+            echo "IS_LATEST=false" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.inputs.update_latest }}" == "true" ]]; then
+            echo "TAG_NAME=latest" >> $GITHUB_OUTPUT
+            echo "IS_LATEST=true" >> $GITHUB_OUTPUT
+          elif [[ -n "${{ github.event.inputs.manual_tag }}" ]]; then
+            echo "TAG_NAME=${{ github.event.inputs.manual_tag }}" >> $GITHUB_OUTPUT
+            echo "IS_LATEST=false" >> $GITHUB_OUTPUT
+          else
+             echo "Error: No tag specified and update_latest is false"
+             exit 1
+          fi
+
+      - name: Release based on Tag
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ inputs.tag_name }}
+          tag_name: ${{ steps.tag.outputs.TAG_NAME }}
+          title: "Release ${{ steps.tag.outputs.TAG_NAME }}"
           files: |
             zombie-watcher-win.exe
             zombie-watcher-linux
@@ -57,5 +79,6 @@ jobs:
             zombie-watcher-macos-arm64
           fail_on_unmatched_files: true
           generate_release_notes: true
+          prerelease: ${{ steps.tag.outputs.IS_LATEST == 'true' }} 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
