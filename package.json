@@ -1,7 +1,7 @@
 {
   "name": "zombie-dev-watcher",
   "version": "1.0.0",
-  "description": "CLI utility to kill zombie dev-server processes on Windows",
+  "description": "Cross-platform CLI utility to kill zombie dev-server processes (Windows, macOS, Linux)",
   "bin": {
     "zombie-watcher": "src/index.ts"
   },

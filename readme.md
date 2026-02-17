@@ -1,10 +1,11 @@
 # Zombie Dev Watcher 🧟
 
-A simplified utility to prevent "zombie" dev-server processes from accumulating on your system. 
+A simplified cross-platform utility to prevent "zombie" dev-server processes from accumulating on your system. 
 
 It launches itself on a **lock port** (default `322`) and watches one or more **target ports** (default `5173`). When a new process starts on a higher port in the range, the watcher automatically kills the old process to free up resources.
 
 ## Key Features
+- **Cross-Platform**: Works on **Windows**, **macOS**, and **Linux**.
 - **Auto-Kill Zombies**: Prevents "marching ports" (5173 -> 5174 -> 5175...) by killing the old process when a new one appears.
 - **Singleton / Multi-Instance**: 
     - Binds to port **322** to ensure usage as a singleton for a specific set of watched ports.
@@ -17,13 +18,14 @@ It launches itself on a **lock port** (default `322`) and watches one or more **
 
 ```bash
 # Run with default settings (Base: 5173, Lock Port: 322)
-zombie-watcher.exe
+./zombie-watcher.exe  # Windows
+./zombie-watcher      # macOS/Linux
 
 # Watch multiple ports (e.g., Vite and a backend API)
-zombie-watcher.exe --base "5173,3000,8080"
+zombie-watcher --base "5173,3000,8080"
 
 # Dry-run mode (see what would be killed)
-zombie-watcher.exe --dry-run
+zombie-watcher --dry-run
 ```
 
 ### Options
@@ -39,14 +41,6 @@ This project uses **Bun**.
 ### Build Manually
 ```bash
 bun install
+# Build for your current platform
 bun run build
-# Creates: zombie-watcher.exe
 ```
-
-### GitHub Workflow
-This repository includes a manual GitHub workflow to build and release the executable.
-1. Go to **Actions** tab.
-2. Select **Manual Release Build**.
-3. Click **Run workflow**.
-
-This will build `zombie-watcher.exe` and update the release tag.
