@@ -1,6 +1,17 @@
 # Zombie Dev Watcher 🧟
 
+![Build Status](https://github.com/v01g/AiDevServerWatcher/actions/workflows/manual_release.yml/badge.svg)
+
 A simplified cross-platform utility to prevent "zombie" dev-server processes from accumulating on your system. 
+
+## 📥 Download Latest Release
+
+| Platform | Architecture | Download Link |
+| :--- | :--- | :--- |
+| **Windows** | x64 | [zombie-watcher-win.exe](https://github.com/v01g/AiDevServerWatcher/releases/latest/download/zombie-watcher-win.exe) |
+| **Linux** | x64 | [zombie-watcher-linux](https://github.com/v01g/AiDevServerWatcher/releases/latest/download/zombie-watcher-linux) |
+| **macOS** | Intel (x64) | [zombie-watcher-macos](https://github.com/v01g/AiDevServerWatcher/releases/latest/download/zombie-watcher-macos) |
+| **macOS** | Silicon (ARM64) | [zombie-watcher-macos-arm64](https://github.com/v01g/AiDevServerWatcher/releases/latest/download/zombie-watcher-macos-arm64) | 
 
 It launches itself on a **lock port** (default `322`) and watches one or more **target ports** (default `5173`). When a new process starts on a higher port in the range, the watcher automatically kills the old process to free up resources.
 
