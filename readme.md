@@ -9,7 +9,7 @@ A simplified cross-platform utility to prevent "zombie" dev-server processes fro
 
 **The program is free, but even a 30-cent donation helps!**
 
-I develop RapidWhisper in my free time and **every donation motivates me to keep improving it**. Even if you can't donate — **just hop into Discord and say that the app helps you**. That feedback alone makes it all worth it!
+I develop Zombie Dev Watcher in my free time and **every donation motivates me to keep improving it**. Even if you can't donate — **just hop into Discord and say that the app helps you**. That feedback alone makes it all worth it!
 
 **Ways to support:**
 
