@@ -4,12 +4,11 @@
 
 A simplified cross-platform utility to prevent "zombie" dev-server processes from accumulating on your system. 
 
-
 ## 💖 Support the Project
 
 **The program is free, but even a 30-cent donation helps!**
 
-I develop Zombie Dev Watcher in my free time and **every donation motivates me to keep improving it**. Even if you can't donate — **just hop into Discord and say that the app helps you**. That feedback alone makes it all worth it!
+I develop RapidWhisper in my free time and **every donation motivates me to keep improving it**. Even if you can't donate — **just hop into Discord and say that the app helps you**. That feedback alone makes it all worth it!
 
 **Ways to support:**
 
@@ -46,37 +45,56 @@ zombie-watcher
 
 ## Description
 
-It launches itself on a **lock port** (default `322`) and watches one or more **target ports** (default `5173`). When a new process starts on a higher port in the range, the watcher automatically kills the old process to free up resources.
+The tool operates in two modes:
+
+1. **Port Mode** (Default): Watches target ports (e.g., `5173`). When a new process starts on a higher port in the range, the watcher automatically kills the old process to free up resources.
+2. **Process Mode** (`--mode process`): Watches for **duplicate processes** based on their command line arguments. If you launch the same script/command again, the old instance is killed. It also supports killing processes that run for too long.
 
 ## Key Features
 - **Cross-Platform**: Works on **Windows**, **macOS**, and **Linux**.
 - **Auto-Kill Zombies**: Prevents "marching ports" (5173 -> 5174 -> 5175...) by killing the old process when a new one appears.
+- **Process Deduplication**: Kills older instances of the exact same command line to prevent duplicates.
+- **Max Age Timeout**: Automatically kill processes that have been running for too long (e.g., > 30 mins).
 - **Singleton / Multi-Instance**: 
     - Binds to port **322** to ensure usage as a singleton for a specific set of watched ports.
     - If 322 is taken, it automatically tries **323, 324... up to 332**, allowing you to run multiple independent watchers for different projects.
-- **Multi-Port Support**: Watch multiple base ports simultaneously (e.g., `5173` and `3000`).
-- **Lightweight**: Built with Bun.
-- **Safe**: Includes `--dry-run` and allowlist filtering.
 
 ## Usage
 
+### 1. Port Watcher (Default)
+
+Matches processes by **port usage**.
+
 ```bash
 # Run with default settings (Base: 5173, Lock Port: 322)
-./zombie-watcher.exe  # Windows
-./zombie-watcher      # macOS/Linux
+./zombie-watcher.exe
 
 # Watch multiple ports (e.g., Vite and a backend API)
 zombie-watcher --base "5173,3000,8080"
+```
 
-# Dry-run mode (see what would be killed)
-zombie-watcher --dry-run
+### 2. Process Watcher (New)
+
+Matches processes by **exact command line**. Useful for scripts that don't bind ports or when you want to ensure only one instance of a specific task runs.
+
+```bash
+# Watch for duplicate node/bun processes and kill the old ones
+zombie-watcher --mode process --filter "node;bun"
+
+# Kill any node process that runs longer than 30 minutes
+zombie-watcher --mode process --max-age 30
 ```
 
 ### Options
-- `--base <ports>`: Comma-separated list of base ports to watch (Default: `5173`).
-- `--range <n>`: Range to scan for each base port (Default: `20`).
-- `--filter <names>`: Semicolon-separated list of allowed process names (Default: `bun;node;npm;npx;pnpm;yarn;vite;deno;go;air;python;python3;uvicorn;flask;ruby;rails;java;gradle;mvn;php;swift;dotnet`).
-- `--strategy <type>`: `chain` (kill n-1) or `kill-base` (kill base).
+
+| Option | Description | Default |
+| :--- | :--- | :--- |
+| `-m, --mode` | Watch mode: `port` or `process` | `port` |
+| `-b, --base` | Base ports to watch (Port Mode) | `5173` |
+| `-r, --range` | Port range to scan | `20` |
+| `-f, --filter` | Filter process names (semicolon separated) | `bun;node;npm;...` |
+| `--max-age` | Kill processes older than N minutes (Process Mode) | `0` (Disabled) |
+| `-d, --dry-run` | Log what would be killed without killing | `false` |
 
 ## Installation / Build
 

@@ -1,5 +1,4 @@
 
-
 export interface WatcherConfig {
   basePorts: number[];
   range: number;
@@ -8,12 +7,14 @@ export interface WatcherConfig {
   filter: string[];
   dryRun: boolean;
   cwd?: string;
+  maxAge?: number;
 }
 
 export interface ProcessInfo {
   pid: number;
   command: string;
   cwd?: string;
+  creationDate?: string;
 }
 
 export type PortMap = Map<number, ProcessInfo>;
